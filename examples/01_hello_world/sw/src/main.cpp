@@ -91,7 +91,7 @@ void parseDataFile(const std::string& file_path, coyote::cThread& coyote_thread,
             if (char_buff_size > 32768) {
                 // To balance between large and small TLB usage, allocate larger buffers with hugepages
                 // Note, the threshold of 32 kB is somewhat arbitrary
-                char_buff = (char *) coyote_thread.getMem({coyote::CoyoteAllocType::HPF, (uint32_t) char_buff_size });
+                char_buff = (char *) coyote_thread.getMem({coyote::CoyoteAllocType::REG, (uint32_t) char_buff_size }); // TODO: Change this back to huge pages for real hardware
             }  else {
                 char_buff = (char *) coyote_thread.getMem({coyote::CoyoteAllocType::REG, (uint32_t) char_buff_size });
             }
@@ -227,7 +227,7 @@ int main() {
         // Allocate buffer for output metadata
         char* out_ptr;
         if (out_size > 32768) {
-            out_ptr = (char *) coyote_thread.getMem({coyote::CoyoteAllocType::HPF, (uint32_t) out_size });
+            out_ptr = (char *) coyote_thread.getMem({coyote::CoyoteAllocType::REG, (uint32_t) out_size }); // TODO: Change this back to huge pages for real hardware
         }  else {
             out_ptr = (char *) coyote_thread.getMem({coyote::CoyoteAllocType::REG, (uint32_t) out_size });
         }

@@ -436,7 +436,7 @@ set_property -dict {
 set zk_fifo_1024w_256d [create_ip -name fifo_generator -vendor xilinx.com -library ip -version 13.2 -module_name zk_fifo_1024w_256d]
 
 set_property -dict { 
-  CONFIG.Fifo_Implementation {Common_Clock_Block_RAM}
+  CONFIG.FIFO_Implementation_axis {Common_Clock_Block_RAM}
   CONFIG.INTERFACE_TYPE {AXI_STREAM}
   CONFIG.Use_Embedded_Registers {false}
   CONFIG.Reset_Type {Asynchronous_Reset}
@@ -459,7 +459,7 @@ set_property -dict {
   CONFIG.Empty_Threshold_Assert_Value_rach {14}
   CONFIG.FIFO_Implementation_rdch {Common_Clock_Builtin_FIFO}
   CONFIG.FIFO_Application_Type_axis {Packet_FIFO}
-  CONFIG.Input_Depth_axis {512}
+  CONFIG.Input_Depth_axis {256}
   CONFIG.Enable_Data_Counts_axis {true}
   CONFIG.Programmable_Full_Type_axis {Single_Programmable_Full_Threshold_Constant}
   CONFIG.Full_Threshold_Assert_Value_axis {128}
@@ -481,7 +481,7 @@ set_property -dict {
 set zk_fifo_576x1024 [create_ip -name fifo_generator -vendor xilinx.com -library ip -version 13.2 -module_name zk_fifo_576x1024]
 
 set_property -dict { 
-  CONFIG.Fifo_Implementation {Common_Clock_Block_RAM}
+  CONFIG.FIFO_Implementation_axis {Common_Clock_Block_RAM}
   CONFIG.INTERFACE_TYPE {AXI_STREAM}
   CONFIG.Use_Embedded_Registers {false}
   CONFIG.Reset_Type {Asynchronous_Reset}
