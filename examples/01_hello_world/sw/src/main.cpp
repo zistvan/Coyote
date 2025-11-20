@@ -170,42 +170,11 @@ void parseMetaFile(const std::string& file_path, coyote::cThread& coyote_thread,
     meta_file.close();
 }
 
-<<<<<<< HEAD
-int main(int argc, char *argv[])  {
-    // Run-time options; for more details see the description below
-    bool hugepages, mapped, stream;
-    unsigned int min_size, max_size, n_runs;
-
-    // Parse CLI arguments using Boost, an external library, providing easy parsing of run-time parameters
-    // We can easily set the variable type, the variable used for storing the parameter and default values
-    boost::program_options::options_description runtime_options("Coyote Hello World Example");
-    runtime_options.add_options()
-        ("hugepages,h", boost::program_options::value<bool>(&hugepages)->default_value(true), "Use hugepages")
-        ("mapped,m", boost::program_options::value<bool>(&mapped)->default_value(true), "Use mapped memory (see README for more details)")
-        ("stream,s", boost::program_options::value<bool>(&stream)->default_value(1), "Source / destination data stream: HOST(1) or FPGA(0)")
-        ("runs,r", boost::program_options::value<unsigned int>(&n_runs)->default_value(50), "Number of times to repeat the test")
-        ("min_size,x", boost::program_options::value<unsigned int>(&min_size)->default_value(64), "Starting (minimum) transfer size [B]")
-        ("max_size,X", boost::program_options::value<unsigned int>(&max_size)->default_value(4 * 1024 * 1024), "Ending (maximum) transfer size [B]");
-    boost::program_options::variables_map command_line_arguments;
-    boost::program_options::store(boost::program_options::parse_command_line(argc, argv, runtime_options), command_line_arguments);
-    boost::program_options::notify(command_line_arguments);
-
-    HEADER("CLI PARAMETERS:");
-    std::cout << "Enable hugepages: " << hugepages << std::endl;
-    std::cout << "Enable mapped pages: " << mapped << std::endl;
-    std::cout << "Data stream: " << (stream ? "HOST" : "CARD") << std::endl;
-    std::cout << "Number of test runs: " << n_runs << std::endl;
-    std::cout << "Starting transfer size: " << min_size << std::endl;
-    std::cout << "Ending transfer size: " << max_size << std::endl << std::endl;
-
-    // Obtain a Coyote thread
-=======
 int main() {
     const std::string data_file_path = "multes-example-input-data.txt";
     const std::string meta_file_path = "multes-example-input-meta.txt";
 
     // Create a Coyote thread
->>>>>>> origin/master
     coyote::cThread coyote_thread(DEFAULT_VFPGA_ID, getpid());
 
     // Process the data file
