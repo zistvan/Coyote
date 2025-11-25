@@ -454,7 +454,7 @@ begin
 				init_peer_cnt <= (others => '0');
 				init_user_cnt <= (others => '0');
 
-				inCmdReady <= '1';
+				inCmdReady <= '0';
 
 				error_valid <= '0';
 
@@ -539,6 +539,7 @@ begin
 							init_peer_cnt <= (others => '0');
 							if (init_user_cnt = 2 ** USER_BITS - 1) then
 								myState <= ST_WAITOP;
+								inCmdReady <= '1';
 							end if;
 
 						end if;

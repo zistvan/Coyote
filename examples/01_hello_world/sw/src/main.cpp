@@ -16,8 +16,9 @@
 // Function to reverse the endianess of a hex string
 std::string reverseEndianess(const std::string& hex_str) {
     std::string reversed;
+    int ins = hex_str.size();
     for (size_t i = 0; i < hex_str.size(); i += 2) {
-        reversed.insert(0, hex_str.substr(i, 2));
+        reversed.insert(0, hex_str.substr(ins-2-i, 2));
     }
     return reversed;
 }

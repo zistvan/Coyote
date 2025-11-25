@@ -57,7 +57,7 @@ architecture bench of multes_coyote_hacktoplevel is
    --component zookeeper_tcp_top_parallel_nkv
   component muu_TopWrapper_fclk512
   generic (
-       IS_SIM : integer := 0;
+       IS_SIM : integer := 1;
        USER_BITS : integer := 3;
        HASHTABLE_MEM_SIZE : integer := 16;
        VALUESTORE_MEM_SIZE : integer := 16             
@@ -426,7 +426,7 @@ begin
 	       m_axis_open_connection_TREADY =>  '1',
 	       s_axis_open_status_TVALID => openConnRespValid,
 	       s_axis_open_status_TREADY => openConnRespReady,
-	       s_axis_open_status_TDATA => ticker,--"000011110000111100001111",
+	       s_axis_open_status_TDATA => "000011110000111100001111";
 	       m_axis_close_connection_TREADY => '1',	       
 	       m_axis_listen_port_TREADY => '1',
 	       s_axis_listen_port_status_TVALID =>  '0',
@@ -688,8 +688,17 @@ mockmem_bitmap : entity work.kvs_tbDRAM_Module
     
         if (aresetn='0') then
             readreq_ready <= '0';
+            openConnRespValid <= '0';
         else
             readreq_ready <= '1';
+
+            if (openConnRespValid='0') then 
+              openConnRespValid <= openConnReqValid;
+            else
+              if (openConnRespReady='1') then 
+                openConnRespValid <= '0';
+              end if;
+            end if;
         end if;
     end if;
     
