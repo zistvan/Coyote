@@ -426,7 +426,7 @@ begin
 	       m_axis_open_connection_TREADY =>  '1',
 	       s_axis_open_status_TVALID => openConnRespValid,
 	       s_axis_open_status_TREADY => openConnRespReady,
-	       s_axis_open_status_TDATA => "000011110000111100001111";
+	       s_axis_open_status_TDATA => "000011110000111100001111",
 	       m_axis_close_connection_TREADY => '1',	       
 	       m_axis_listen_port_TREADY => '1',
 	       s_axis_listen_port_status_TVALID =>  '0',
