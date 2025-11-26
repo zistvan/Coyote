@@ -200,7 +200,7 @@ int main() {
         size_t in_size = meta_in_pair.second;  
 
         // TODO: What's the output size? For now, assuming same as input
-        size_t out_size = in_size;
+        size_t out_size = 64;//in_size;
 
         // Allocate buffer for output metadata
         char* out_ptr = (char *) coyote_thread.getMem({coyote::CoyoteAllocType::REG, (uint32_t) out_size });
@@ -217,13 +217,16 @@ int main() {
         coyote_thread.invoke(coyote::CoyoteOper::LOCAL_TRANSFER, sg_src, sg_dst, true);
     }
 
+    int iter = 0;
     // Repeat the same for data buffers (.dest = 0)
     for (const auto& data_in_pair : data_in) {
+        
+        
         char* in_ptr = data_in_pair.first;
         size_t in_size = data_in_pair.second;  
 
         // TODO: What's the output size? For now, assuming same as input
-        size_t out_size = in_size;
+        size_t out_size = 128;//in_size;
 
         // Allocate buffer for output metadata
         char* out_ptr;
@@ -245,6 +248,12 @@ int main() {
         // Since each of the buffers was ended with the line that contains TLAST = 1,
         // set tlast to true here which will assert the singal for the last data beat
         coyote_thread.invoke(coyote::CoyoteOper::LOCAL_TRANSFER, sg_src, sg_dst, true);
+        
+        iter++;
+        if (iter==5) {
+        	//std::cout << "Waiting for multes reset to finish." << std::endl;
+        //	std::this_thread::sleep_for(std::chrono::seconds(10));
+        }
     }
 
     // Poll on completions

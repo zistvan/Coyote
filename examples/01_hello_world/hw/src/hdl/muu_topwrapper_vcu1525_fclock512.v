@@ -758,7 +758,8 @@ assign debug_kvs = {sessDebugOut[31:0], debugFromKVS[255-32:0]};
                 .s_axis_rst(reset),
                 .s_axis_tvalid(ht_cmd_dramRdData_valid_f),
                 .s_axis_tready(ht_cmd_dramRdData_ready_f),
-                .s_axis_tdata(ht_cmd_dramRdData_data_f),  
+                .s_axis_tdata(ht_cmd_dramRdData_data_f), 
+                .m_axis_clk(aclk), 
                 .m_axis_tvalid(ht_cmd_dramRdData_valid),
                 .m_axis_tready(~ht_cmd_dramRdData_stall),
                 .m_axis_tdata(ht_cmd_dramRdData_data)

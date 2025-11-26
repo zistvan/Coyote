@@ -410,7 +410,8 @@ end component;
       
       signal in_pack_lastaux: std_logic_vector (0 downto 0);
       signal out_pack_lastaux : std_logic_vector (0 downto 0);
-      
+      signal delayoutmetavalid : std_logic;
+      signal out_meta_internal_tvalid : std_logic;
       
 
 begin
@@ -418,7 +419,7 @@ begin
   
   --  uut: zookeeper_tcp_top_parallel_nkv
     uut: muu_TopWrapper_fclk512 
-    generic map ( IS_SIM => 1, USER_BITS => 3, HASHTABLE_MEM_SIZE => 10, VALUESTORE_MEM_SIZE => 10 )
+    generic map ( IS_SIM => 1, USER_BITS => 3, HASHTABLE_MEM_SIZE => 16, VALUESTORE_MEM_SIZE => 16 )
     port map ( aclk           => aclk,
 	       aresetn        => aresetn,	       
 	       
@@ -446,11 +447,11 @@ begin
 	       m_axis_tx_data_TDATA => out_pack_tdata,
 	       m_axis_tx_data_TLAST => out_pack_lastaux,
 	       
-	       m_axis_tx_metadata_TVALID => out_meta_tvalid,
+	       m_axis_tx_metadata_TVALID => out_meta_internal_tvalid,
                m_axis_tx_metadata_TREADY => out_meta_tready,
 	       m_axis_tx_metadata_TDATA =>  out_meta_tdata(31 downto 0),
 
-	       s_axis_tx_status_TVALID => '0',
+	       s_axis_tx_status_TVALID => delayoutmetavalid,
 	       s_axis_tx_status_TDATA => (others => '0'),
 	       
 	       
@@ -554,7 +555,7 @@ debug_kvs => debug_signal
    mockmem_ht : entity work.kvs_tbDRAMHDLNode
               generic map (
                   DRAM_DATA_WIDTH => 512,
-                  DRAM_ADDR_WIDTH => 10
+                  DRAM_ADDR_WIDTH => 16
                )
               port map(
                 clk                     => aclk,
@@ -586,7 +587,7 @@ debug_kvs => debug_signal
             mockmem_upd : entity work.kvs_tbDRAMHDLNode
             generic map (
                               DRAM_DATA_WIDTH => 512,
-                              DRAM_ADDR_WIDTH => 10
+                              DRAM_ADDR_WIDTH => 16
                            )
               port map(
                 clk                     => aclk,
@@ -620,7 +621,7 @@ debug_kvs => debug_signal
          mockmem_ptr : entity work.kvs_tbDRAM_Module
               generic map (
                   DRAM_DATA_WIDTH => 512,
-                                DRAM_ADDR_WIDTH => 10
+                                DRAM_ADDR_WIDTH => 16
                )
               port map(
                 clk                     => aclk,
@@ -646,7 +647,7 @@ debug_kvs => debug_signal
 mockmem_bitmap : entity work.kvs_tbDRAM_Module
               generic map (
                   DRAM_DATA_WIDTH => 512,
-                                DRAM_ADDR_WIDTH => 10
+                                DRAM_ADDR_WIDTH => 16
                )
               port map(
                 clk                     => aclk,
@@ -678,6 +679,8 @@ mockmem_bitmap : entity work.kvs_tbDRAM_Module
   
   in_pack_lastaux(0) <= in_pack_tlast;
   out_pack_tlast <= out_pack_lastaux(0);
+  out_meta_tvalid <= out_meta_internal_tvalid;
+  out_meta_tlast <= '1';
   debug <= debug_signal;
 
  main : process(aclk)
@@ -685,6 +688,8 @@ mockmem_bitmap : entity work.kvs_tbDRAM_Module
     if (aclk'event and aclk='1') then
     
         rstX <= not aresetn;
+
+        delayoutmetavalid <= out_meta_internal_tvalid;
     
         if (aresetn='0') then
             readreq_ready <= '0';
